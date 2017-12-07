@@ -12,6 +12,9 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import io.github.wilsontheory.Cat;
@@ -25,6 +28,11 @@ public class DAOthing {
 	@Autowired //add jdbc template defined as bean
 	private JdbcTemplate jdbcTemplate;
 	
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterTemplate; //for parameters in sql query with direct names
+	
+	//SimpleJdbcTemplate is an easy lightweight one to consider too
+
 	public Cat getCat(int id){
 		Connection conn = null;
 		Cat finalCat = null;
@@ -91,6 +99,13 @@ public class DAOthing {
 		//.update() is usually used for DML like insert/update/delete
 	}
 	
+	public void insertCatNamedParams(Cat thisCat){
+		String query = "INSERT INTO cats (ID, NAME) VALUES (:id, :name)";
+		SqlParameterSource pSource = new MapSqlParameterSource("id", thisCat.getId())
+				.addValue("name", thisCat.getName()); //is implementation of paramsource iface
+		namedParameterTemplate.update(query, pSource);
+	}
+	
 	public void resetCatTable(){
 		//DDL is done with jdbcTemplate.execute()
 		try {
@@ -111,5 +126,13 @@ public class DAOthing {
 
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+	public NamedParameterJdbcTemplate getNamedParameterTemplate() {
+		return namedParameterTemplate;
+	}
+
+	public void setNamedParameterTemplate(NamedParameterJdbcTemplate namedParameterTemplate) {
+		this.namedParameterTemplate = namedParameterTemplate;
 	}
 }

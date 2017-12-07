@@ -27,5 +27,14 @@
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<!--  bean for universal named parameter jdbc template, does not have a no-arg constructor so -->
+	<bean id="namedParameterTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="simpleJdbcDao" class="io.github.wilsontheory.dao.SimpleJdbcDao">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
 
 </beans>
