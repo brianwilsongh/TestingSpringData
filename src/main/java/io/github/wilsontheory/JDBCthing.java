@@ -14,11 +14,13 @@ public class JDBCthing {
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
 		DAOthing daoThing = (DAOthing) context.getBean("DAOthing");
+		daoThing.resetCatTable();
 		Cat cat = daoThing.getCat(1);
 		System.out.println("cat " + cat.getName() + " has been retrieved");
 		System.out.println("cat count: " + daoThing.getCatCount());
 		System.out.println("cat name : " + daoThing.getCatName(1));
 		System.out.println("get representative cat object " + daoThing.getCat(1).toString());
-		daoThing.getAllCats().stream().forEach((thisCat) -> System.out.println("Catlist: " + thisCat.toString()));
+		daoThing.insertCat(new Cat(2, "Mittens"));
+		daoThing.getAllCats().stream().forEach((thisCat) -> System.out.println("Catlist: " + thisCat.getName() + thisCat.toString()));
 	}
 }

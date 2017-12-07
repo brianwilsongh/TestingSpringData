@@ -33,7 +33,7 @@ public class DAOthing {
 //			Class.forName(driver).newInstance();
 //			conn = DriverManager.getConnection("jdbc:derby://localhost:1527/db");
 			
-			conn = dataSource.getConnection(); //eliminate 3 lines above
+			conn = dataSource.getConnection(); //eliminate 3 lines above with this alone
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM cats WHERE id = ?");
 			ps.setInt(1, id);
 			ResultSet result = ps.executeQuery();
@@ -49,9 +49,7 @@ public class DAOthing {
 				e.printStackTrace();
 			}
 		}
-		
 		return finalCat;
-		
 	}
 	
 	public int getCatCount(){
@@ -85,7 +83,25 @@ public class DAOthing {
 			thisCat.setName(resultSet.getString("NAME"));
 			return thisCat;
 		}
-		
+	}
+	
+	public void insertCat(Cat thisCat){
+		String query = "INSERT INTO cats (ID, NAME) VALUES (?, ?)";
+		jdbcTemplate.update(query, new Object[] {thisCat.getId(), thisCat.getName()});
+		//.update() is usually used for DML like insert/update/delete
+	}
+	
+	public void resetCatTable(){
+		//DDL is done with jdbcTemplate.execute()
+		try {
+			jdbcTemplate.execute("DROP TABLE cats");
+		} catch (Exception e){
+			e.printStackTrace();
+		} finally {
+			System.out.println("**rebuilding cat table from scratch");
+			jdbcTemplate.execute("CREATE TABLE cats (ID integer, NAME varchar(50))");
+			this.insertCat(new Cat(1, "Chellk"));
+		}
 	}
 	
 
