@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import io.github.wilsontheory.Cat;
@@ -18,6 +19,9 @@ public class DAOthing {
 	
 	@Autowired //add the DataSource created as bean as this member var, autowire since there is only one DataSource
 	private DataSource dataSource;
+	
+	@Autowired //add jdbc template defined as bean
+	private JdbcTemplate jdbcTemplate;
 	
 	public Cat getCat(int id){
 		Connection conn = null;
@@ -46,5 +50,18 @@ public class DAOthing {
 		
 		return finalCat;
 		
+	}
+	
+	public int getCatCount(){
+		String query = "SELECT COUNT(*) FROM cats";
+		return jdbcTemplate.queryForInt(query); //so easy! yay
+	}
+
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 }

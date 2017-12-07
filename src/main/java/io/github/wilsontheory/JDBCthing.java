@@ -16,5 +16,6 @@ public class JDBCthing {
 		DAOthing daoThing = (DAOthing) context.getBean("DAOthing");
 		Cat cat = daoThing.getCat(1);
 		System.out.println("cat " + cat.getName() + " has been retrieved");
+		System.out.println(daoThing.getCatCount());
 	}
 }
