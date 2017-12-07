@@ -16,6 +16,9 @@ public class JDBCthing {
 		DAOthing daoThing = (DAOthing) context.getBean("DAOthing");
 		Cat cat = daoThing.getCat(1);
 		System.out.println("cat " + cat.getName() + " has been retrieved");
-		System.out.println(daoThing.getCatCount());
+		System.out.println("cat count: " + daoThing.getCatCount());
+		System.out.println("cat name : " + daoThing.getCatName(1));
+		System.out.println("get representative cat object " + daoThing.getCat(1).toString());
+		daoThing.getAllCats().stream().forEach((thisCat) -> System.out.println("Catlist: " + thisCat.toString()));
 	}
 }

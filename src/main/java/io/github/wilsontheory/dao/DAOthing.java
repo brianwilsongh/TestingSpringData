@@ -5,11 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import io.github.wilsontheory.Cat;
@@ -56,6 +58,36 @@ public class DAOthing {
 		String query = "SELECT COUNT(*) FROM cats";
 		return jdbcTemplate.queryForInt(query); //so easy! yay
 	}
+	
+	public String getCatName(int id){
+		String query = "SELECT name FROM cats WHERE id = ?";
+		return jdbcTemplate.queryForObject(query,  new Object[] {id}, String.class);
+	}
+	
+	public Cat getCatObject(int id){
+		String query = "SELECT * FROM cats WHERE id = ?";
+		//rowmapper (3rd arg) maps columns into fields in a model object
+		return (Cat) jdbcTemplate.queryForObject(query,  new Object[] {id}, new catMapper());
+	}
+	
+	public List<Cat> getAllCats(){
+		//RowMapper's mapRow() is called for each row returned by query
+		String query = "SELECT * FROM cats";
+		return jdbcTemplate.query(query, new catMapper());
+	}
+	
+	private static final class catMapper implements RowMapper {
+
+		public Object mapRow(ResultSet resultSet, int row) throws SQLException {
+			//manually mapping row to an object, row num isn't necessarily used
+			Cat thisCat = new Cat();
+			thisCat.setId(resultSet.getInt("ID"));
+			thisCat.setName(resultSet.getString("NAME"));
+			return thisCat;
+		}
+		
+	}
+	
 
 	public JdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
