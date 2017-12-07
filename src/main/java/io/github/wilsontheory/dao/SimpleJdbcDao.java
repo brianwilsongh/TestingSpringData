@@ -3,7 +3,7 @@ package io.github.wilsontheory.dao;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.stereotype.Component;
 
-import io.github.wilsontheory.Cat;
+import io.github.wilsontheory.model.Cat;
 
 @Component
 public class SimpleJdbcDao extends SimpleJdbcDaoSupport {

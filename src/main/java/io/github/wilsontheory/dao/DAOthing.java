@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import io.github.wilsontheory.Cat;
+import io.github.wilsontheory.model.Cat;
 
 @Component
 public class DAOthing {
@@ -113,7 +113,7 @@ public class DAOthing {
 		} catch (Exception e){
 			e.printStackTrace();
 		} finally {
-			System.out.println("**rebuilding cat table from scratch");
+			System.out.println("**reset cat table");
 			jdbcTemplate.execute("CREATE TABLE cats (ID integer, NAME varchar(50))");
 			this.insertCat(new Cat(1, "Chellk"));
 		}

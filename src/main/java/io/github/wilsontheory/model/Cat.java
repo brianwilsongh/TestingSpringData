@@ -1,8 +1,17 @@
-package io.github.wilsontheory;
+package io.github.wilsontheory.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name="cats")
 public class Cat {
 	
+	@Id
 	int id;
+	
 	String name;
 	
     public int getId() {
